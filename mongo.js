@@ -9,9 +9,9 @@ var voteSchema = mongoose.Schema({
 module.exports = function() {
 	console.log('loaded');
 	try{
-		console.log(mongoose.model('Vote'));
+		mongoose.model('Vote');
 	} catch (e) {
-		console.log(mongoose.model('Vote', voteSchema));
+		mongoose.model('Vote', voteSchema);
 	}
 	return mongoose.model('Vote');
 };
