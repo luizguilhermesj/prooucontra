@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pró ou Contra</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+	<style>
+		body {
+			transition: background 10s;
+			font-family: "Opensans";
+		}
+		body.yes {
+			background-color: #5AD3D1;
+		}
+		body.no {
+			background-color: rgba(255, 90, 94, 0.7);
+		}
+		h1 {
+			margin-top:100px;
+		}
+
+		.button {
+		    display: inline-block;
+		    height: 300px;
+		    width: 300px;
+		    border-radius: 300px;
+		    font-size: 50px;
+		    border: none;
+		    margin-top: 150px;
+		    transition: all 0.2s;
+		    transform: scale3d(1,1,1);
+		    background-color: #EFEFEF;
+		    line-height: 300px;
+		    color: black;
+			text-decoration: none !important;
+			opacity: 1;
+		}
+		.button:hover {
+			transition: all 0.2s;
+			transform: scale3d(1.1,1.1,1.1);
+		}
+		.done .button, .done h1 {
+			transition: all 2s;
+			transform: translate3d(0, -1000px,0);
+			opacity: 0;
+		}
+
+		#result-container {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			margin: auto;
+			max-width: 400px;
+			max-height: 400px;
+		}
+		@media (max-width: 320px) { 
+			#result-container {
+				top:230px;
+			}
+		}
+		@media (max-width: 768px) { 
+			#result-container {
+				top:200px;
+			}
+		}
+
+
+		.result-counter {
+			transition: all 0.5s;
+			transform: translate3d(0, -50px, 0);
+			font-size: 50px;
+			opacity: 0;
+		}
+		.done .result-counter {
+			transition: all 0.5s;
+			transform: translate3d(0, 0, 0);
+			opacity: 1;
+		}
+
+		#pros {
+			text-align: left;
+		}
+
+		#cons {
+			text-align: right;
+		}
+		#note {
+			font-size: 12;
+			text-align: center;
+			opacity: 0;
+		}
+		.done #note {
+			opacity: 1;
+		}
+
+	</style>
+</head>
+<body>
+<div id="note">
+	Os dados apresentados são apenas uma representação de quantos cliques ocorreram em cada uma das opções. Sendo passíveis de falha são apenas uma representação da opinião geral dos participantes.
+</div>
+<div class="container">
+	<div class="row text-center">
+		<h1>Qual o seu posicionamento referente ao impeachment da Dilma?</h1>
+	</div>
+	<div class="row">
+		<div class="col-sm-6 text-center">
+			<div id="pros" class="result-counter">{{pros}}<br>prós</div>
+			<a href="#" class="button" data-action="yes">pró</a>
+		</div>
+		<div class="col-sm-6 text-center">
+			<div id="cons" class="result-counter">{{cons}}<br>contras</div>
+			<a href="#" class="button" data-action="no">contra</a>
+		</div>
+	</div>
+
+	<canvas id="result" width="400" height="400"></canvas>
+</div>
+
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+	<script type="text/javascript">
+		(function(){
+			$(document).ready(function(){
+			});
+
+			$(document).one('click', '[data-action="yes"], [data-action="no"]', function(){
+ 
+				document.cookie = 'voted='+$(this).data('action')+'; expires=Fri, 1 Jan 2999 00:00:01 UTC; path=/'
+				$('body').addClass('done');
+				$('body').addClass($(this).data('action'));
+
+				var data = [
+				    {
+				        value: {{cons}},
+				        color:"#F7464A",
+				        highlight: "#FF5A5E",
+				        label: "Contrários"
+				    },
+				    {
+				        value: {{pros}},
+				        color: "#46BFBD",
+				        highlight: "#5AD3D1",
+				        label: "Favoráveis"
+				    }
+				];
+
+				$.post('/vote',{vote: $(this).data('action'), '_csrf': '{{csrf}}'});
+				var ctx = $("#result").get(0).getContext("2d");
+				var myPieChart = new Chart(ctx).Pie(data, {
+					responsive: true,
+				    onAnimationComplete: function()
+				    {
+				        this.showTooltip(this.segments, true);
+
+				        //Show tooltips in bar chart (issue: multiple datasets doesnt work http://jsfiddle.net/5gyfykka/14/)
+				        //this.showTooltip(this.datasets[0].bars, true);
+
+				        //Show tooltips in line chart (issue: multiple datasets doesnt work http://jsfiddle.net/5gyfykka/14/)
+				        //this.showTooltip(this.datasets[0].points, true);  
+				    },
+    				showTooltips: true
+				});
+			});
+		})();
+	</script>
+</body>
+</html>
