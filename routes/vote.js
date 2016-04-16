@@ -5,7 +5,7 @@ var Vote = require('../mongo')();
 /* GET vote listing. */
 router.post('/', function(req, res, next) {
 	Vote.findOne({id:'master'}, function(err, vote){
-		if (vote.length == 0) {
+		if (vote) {
 			var voting = new Vote({id: 'master', yes: 0, no: 0});
 			voting.save();
 		}

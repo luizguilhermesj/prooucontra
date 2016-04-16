@@ -8,8 +8,7 @@ module.exports = function (shipit) {
       repositoryUrl: 'git@github.com:luizguilhermesj/prooucontra.git',
       ignores: ['.git'],
       rsync: ['--del'],
-      keepReleases: 4,
-      shallowClone: true
+      keepReleases: 4
     },
     production: {
       servers: 'root@prooucontra.com.br'

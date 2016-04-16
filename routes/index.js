@@ -8,6 +8,12 @@ router.get('/', function(req, res, next) {
 	var pros, cons;
 
 	Vote.findOne({id:'master'}, function(err, vote){
+
+		if (!vote) {
+			var voting = new Vote({id: 'master', yes: 0, no: 0});
+			voting.save();
+		}
+
 		var pros = vote.yes;
 		var cons = vote.no;
 		  if (req.cookies.voted) {
