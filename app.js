@@ -5,7 +5,6 @@ var logger = require('morgan');
 var csrf = require('csurf');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mustacheExpress = require('mustache-express');
 
 var routes = require('./routes/index');
 var vote = require('./routes/vote');
@@ -16,8 +15,6 @@ mongoose.connect('mongodb://localhost/impeachment');
 var app = express();
 
 // view engine setup
-// Register '.html' extension with The Mustache Express
-app.engine('mustache', mustacheExpress());
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
