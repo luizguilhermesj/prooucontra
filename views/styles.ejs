@@ -19,14 +19,14 @@
 		    display: inline-block;
 		    height: 300px;
 		    width: 300px;
-		    border-radius: 300px;
+		    line-height: 300px;
 		    font-size: 50px;
+		    border-radius: 300px;
 		    border: none;
 		    margin-top: 150px;
 		    transition: all 0.2s;
 		    transform: scale3d(1,1,1);
 		    background-color: #EFEFEF;
-		    line-height: 300px;
 		    color: black;
 			text-decoration: none !important;
 			opacity: 1;
@@ -54,17 +54,6 @@
 			max-width: 400px;
 			max-height: 400px;
 		}
-		@media (max-width: 320px) { 
-			#result-container {
-				top:230px;
-			}
-		}
-		@media (max-width: 768px) { 
-			#result-container {
-				top:200px;
-			}
-		}
-
 
 		.result-counter {
 			transition: all 0.5s;
@@ -87,12 +76,55 @@
 		}
 
 		#note {
-			font-size: 12;
+			font-size: 12px;
 			text-align: center;
 			opacity: 0;
 		}
 		.done #note {
 			opacity: 1;
+		}
+
+		@media (max-width: 768px) { 
+			#result-container {
+				top:200px;
+			}
+		}
+
+		@media (max-width: 401px) { 
+			h1 {
+				margin-top: 0px;
+			}
+			body {
+				margin-bottom: 40px;
+			}
+			.button {
+		    	margin-top: 0px;
+			    height: 150px;
+			    width: 150px;
+			    line-height: 150px;
+			    font-size: 30px;
+			}
+			.done .button {
+				display: none
+			}
+			.done .question-container {
+				display: none;
+			}
+			#result-container {
+				top:-10000px;
+			}
+			.done #result-container {
+				top:230px;
+			}
+
+
+			.result-counter {
+				height: 0;
+				font-size: 40px;
+			}
+			.done .result-counter {
+				height: auto;
+			}
 		}
 
 	</style>
