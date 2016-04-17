@@ -16,19 +16,21 @@ router.get('/', function(req, res, next) {
 
 		var pros = vote.yes;
 		var cons = vote.no;
-		  if (req.cookies.voted) {
-		  	res.render('index-done', {
-			  	pros: pros,
-			  	cons: cons,
-			  	cookie: req.cookies.voted,
-			  	voted: (req.cookies.voted == 'yes') ? 'pró' : 'contra'
-			});	
-		  }
-		  res.render('index', {
+		  
+		if (req.cookies.voted) {
+			return res.render('index-done', {
 		  	pros: pros,
 		  	cons: cons,
-		  	csrf: req.csrfToken()
-		  });
+		  	cookie: req.cookies.voted,
+		  	voted: (req.cookies.voted == 'yes') ? 'pró' : 'contra'
+		});	
+		} 
+
+		return res.render('index', {
+			pros: pros,
+			cons: cons,
+			csrf: req.csrfToken()
+		});
 	});
 });
 
