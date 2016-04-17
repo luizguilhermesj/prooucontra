@@ -49,6 +49,14 @@
 				$('body').addClass('done');
 				$('body').addClass($(this).data('action'));
 				$.post('/vote',{vote: $(this).data('action'), '_csrf': '<%= csrf %>'});
+				
+
+				ga('send', {
+				  hitType: 'event',
+				  eventCategory: 'Consolidation',
+				  eventAction: 'vote',
+				  eventValue: $(this).data('action')
+				});
 
 				renderChart();
 			});
