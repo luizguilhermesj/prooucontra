@@ -8,7 +8,7 @@
 	<meta property="og:title"         content="Pró ou Contra - Impeachment" />
 	<meta property="og:description"   content="Acompanhe a opinião das pessoas e dê a sua própria!" />
 	<meta property="og:image"         content="http://prooucontra.com.br/images/prooucontra.com.br.png" />
-	
+
 	<title>Pró ou Contra</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -52,8 +52,11 @@
 			transform: translate3d(0, -1000px,0);
 			opacity: 0;
 		}
-
+		.done #result-container {
+			opacity: 1;
+		}
 		#result-container {
+			opacity: 0;
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -132,7 +135,7 @@
 		<canvas id="result" width="400" height="400"></canvas>
 		<br>
 		<div class="text-center">
-		<a download="prooucontra.com.br.png" id="save" class="btn btn-success" href="">Salvar imagem</a>
+			<a download="prooucontra.com.br.png" id="save" class="btn btn-success" href="">Salvar imagem</a>
 		</div>
 	</div>
 </div>

@@ -14,4 +14,8 @@ module.exports = function (shipit) {
       servers: 'root@prooucontra.com.br'
     }
   });
+
+  shipit.on('deployed', function(){
+    shipit.remote('forever restart /root/prooucontra/current/bin/www');
+  });
 };
