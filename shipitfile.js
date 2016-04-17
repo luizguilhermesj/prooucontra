@@ -29,7 +29,7 @@ module.exports = function (shipit) {
     // shipit.remote('forever start /root/prooucontra/current/bin/www');
 
     shipit.remote('forever stop '+shipit.currentPath+'/bin/www');
-    shipit.remote('PORT=3001 forever start '+shipit.currentPath+'/bin/www');
+    shipit.remote('forever start '+shipit.currentPath+'/bin/www');
 
   });
 
