@@ -18,7 +18,7 @@ var app = express();
 // view engine setup
 // Register '.html' extension with The Mustache Express
 app.engine('mustache', mustacheExpress());
-app.set('view engine', 'mustache');
+app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 // uncomment after placing your favicon in /public
