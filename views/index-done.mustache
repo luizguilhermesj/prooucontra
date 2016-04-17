@@ -115,6 +115,11 @@
 	<script type="text/javascript">
 		(function(){
 			$(document).ready(function(){
+
+				if (document.cookie.replace(/(?:(?:^|.*;\s*)voted\s*\=\s*([^;]*).*$)|^.*$/, "$1")) {
+					window.location.reload();
+				}
+				
 				var data = [
 				    {
 				        value: {{cons}},
