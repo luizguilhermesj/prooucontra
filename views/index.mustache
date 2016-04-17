@@ -148,10 +148,12 @@
 	<script type="text/javascript">
 		(function(){
 			$(document).ready(function(){
+				if (document.cookie.replace(/(?:(?:^|.*;\s*)voted\s*\=\s*([^;]*).*$)|^.*$/, "$1")) {
+					window.location.reload();
+				}
 			});
 
-			$(document).one('click', '[data-action="yes"], [data-action="no"]', function(){
- 
+			$(document).one('click', '[data-action="yes"], [data-action="no"]', function(){				 
 				document.cookie = 'voted='+$(this).data('action')+'; expires=Fri, 1 Jan 2999 00:00:01 UTC; path=/'
 				$('body').addClass('done');
 				$('body').addClass($(this).data('action'));
