@@ -14,7 +14,8 @@
     "express": "~4.13.1",
     "mongoose": "^4.4.12",
     "morgan": "^1.7.0",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "shorthash": "0.0.2"
   },
   "devDependencies": {
     "shipit-cli": "^1.4.1",

@@ -10,11 +10,13 @@
 	<div class="container">
 		<div class="row text-center">
 			<h1>
+				<small>pergunta: <%=question%></small>
+				<br>
 				Você votou: <%= voted %>!
 			</h1>
 			<!-- Your share button code -->
 			<div class="fb-share-button" 
-				data-href="http://prooucontra.com.br" 
+				data-href="http://prooucontra.com.br/vote/<%=hash%>" 
 				data-layout="button_count">
 			</div>
 
@@ -37,6 +39,7 @@
 		</div>
 	</div>
 	<% include scripts %>
+	<% include scripts-vote %>
 
 	<script type="text/javascript">
 		(function(){

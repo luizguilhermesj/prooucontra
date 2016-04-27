@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<% include head %>
+<body>
+	<div id="note">
+		Os dados apresentados são apenas uma representação de quantos cliques ocorreram em cada uma das opções. Sendo passíveis de falha são apenas uma representação da opinião geral dos participantes.
+	</div>
+	<div class="container">
+		<div class="row text-center question-container">
+			<h1 class="question">
+				<%= question %>
+			</h1>
+			<div class="fb-share-button" 
+				data-href="http://prooucontra.com.br/vote/<%=hash%>" 
+				data-layout="button_count">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6 text-center">
+				<div id="pros" class="result-counter"><span data-vote="yes"><%= pros %></span><br>prós</div>
+				<a href="#" class="button" data-action="yes">pró</a>
+			</div>
+			<div class="col-xs-6 text-center">
+				<div id="cons" class="result-counter"><span data-vote="no"><%= cons %></span><br>contras</div>
+				<a href="#" class="button" data-action="no">contra</a>
+			</div>
+		</div>
+
+		<div id="result-container">
+			<canvas id="result" width="400" height="400"></canvas>
+			<br>
+			<div class="text-center">
+				<a download="prooucontra.com.br.png" id="save" class="btn btn-success" href="">Salvar imagem</a>
+			</div>
+		</div>
+	</div>
+	<% include scripts %>
+	<% include scripts-vote %>
+	<script type="text/javascript">
+		(function(){
+			$(document).ready(function(){
+				if (document.cookie.replace(/(?:(?:^|.*;\s*)<%=hash%>\s*\=\s*([^;]*).*$)|^.*$/, "$1")) {
+					window.location.reload();
+				}
+			});
+
+			$(document).one('click', '[data-action="yes"], [data-action="no"]', function(){				 
+				document.cookie = '<%=hash%>='+$(this).data('action')+'; expires=Fri, 1 Jan 2999 00:00:01 UTC; path=/'
+
+				$('body').addClass('done');
+				$('body').addClass($(this).data('action'));
+				$.post('/vote/<%=hash%>',{vote: $(this).data('action'), '_csrf': '<%= csrf %>'});
+
+				ga('send', 'event','votes', $(this).data('action'));
+
+				var counter = $('[data-vote="'+$(this).data('action')+'"]');
+				counter.html(parseInt(counter.text())+1);
+
+				renderChart();
+			});
+		})();
+	</script>
+</body>
+</html>

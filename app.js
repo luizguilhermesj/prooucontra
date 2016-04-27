@@ -8,9 +8,10 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var vote = require('./routes/vote');
+var question = require('./routes/question');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/impeachment');
+mongoose.connect('mongodb://localhost/prooucontra');
 
 var app = express();
 
@@ -29,6 +30,7 @@ app.use(csrf({ cookie: true }))
 
 app.use('/', routes);
 app.use('/vote', vote);
+app.use('/question', question);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

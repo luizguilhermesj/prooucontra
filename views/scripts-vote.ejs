@@ -1,0 +1,44 @@
+	<script>
+		(function(){
+			window.renderChart = function(){
+				var data = [
+				    {
+				        value: <%= cons %>,
+				        color:"#F7464A",
+				        highlight: "#FF5A5E",
+				        label: "Contrários"
+				    },
+				    {
+				        value: <%= pros %>,
+				        color: "#46BFBD",
+				        highlight: "#5AD3D1",
+				        label: "Favoráveis"
+				    }
+				];
+
+				var ctx = $("#result").get(0).getContext("2d");
+				var myPieChart = new Chart(ctx).Pie(data, {
+					responsive: true,
+				    onAnimationComplete: function()
+				    {
+				        this.showTooltip(this.segments, true);
+
+				        //Show tooltips in bar chart (issue: multiple datasets doesnt work http://jsfiddle.net/5gyfykka/14/)
+				        //this.showTooltip(this.datasets[0].bars, true);
+
+				        //Show tooltips in line chart (issue: multiple datasets doesnt work http://jsfiddle.net/5gyfykka/14/)
+				        //this.showTooltip(this.datasets[0].points, true);  
+				    },
+    				showTooltips: true
+				});
+								
+				$("#result").on('mouseleave', function (){
+				    myPieChart.showTooltip(myPieChart.segments, true);
+				});
+
+				$("#save").click(function(){
+					$(this).attr('href', myPieChart.toBase64Image().replace(/^data:image\/[^;]/, 'data:application/octet-stream'))
+				});
+			}
+		})();
+	</script>
