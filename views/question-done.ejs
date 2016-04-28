@@ -23,11 +23,9 @@
 	<% include styles %>
 
 </head>
-<body class="done <%= cookie %>">
-	<div id="note">
-		Os dados apresentados são apenas uma representação de quantos cliques ocorreram em cada uma das opções, sendo passíveis de falha.
-	</div>
-	<body class="done <%= cookie %>">
+<body class="<%= cookie %>">
+<% include nav %>
+	<body class="<%= cookie %>">
 
 	<div class="container">
 		<div class="row text-center">
@@ -56,10 +54,11 @@
 			<canvas id="result" width="400" height="400"></canvas>
 			<br>
 			<div class="text-center">
-				<a download="prooucontra.com.br.png" id="save" class="btn btn-success" href="">Salvar imagem</a>
+				<a download="prooucontra.com.br.png" id="save" class="btn blue-grey lighten-4" href="">Salvar imagem</a>
 			</div>
 		</div>
 	</div>
+	<% include footer %>
 	<% include scripts %>
 	<% include scripts-vote %>
 
@@ -67,6 +66,7 @@
 		(function(){
 			$(document).ready(function(){
 				renderChart();
+				$('body').addClass('done');
 			});
 		})();
 	</script>

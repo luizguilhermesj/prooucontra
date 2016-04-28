@@ -4,6 +4,9 @@ var Question = require('../models/question')();
 var sh = require("shorthash");
 
 router.post('/', function(req, res, next) {
+	if (!req.body.question) {
+		return res.redirect("/");
+	}
 	var question = new Question({
 		hash: sh.unique(req.body.question),
 		text: req.body.question,

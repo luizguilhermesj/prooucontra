@@ -2,9 +2,7 @@
 <html>
 <% include head %>
 <body>
-	<div id="note">
-		Os dados apresentados são apenas uma representação de quantos cliques ocorreram em cada uma das opções. Sendo passíveis de falha são apenas uma representação da opinião geral dos participantes.
-	</div>
+<% include nav %>
 	<div class="container">
 		<div class="row text-center question-container">
 			<h1 class="question">
@@ -18,37 +16,30 @@
 		<div class="row question-form">
 			<form class="form-group" action="/question" method="POST">
 				<input type="hidden" name="_csrf" value="<%= csrf %>">
-				<div class="form-group col-md-offset-3 col-sm-6">
-					<input type="text" class="form-control" name="question" placeholder="Você é pro ou contra?">
+				<div class="form-group col-md-offset-3 col-sm-6 input-field text-center">
+					<input type="text" class="form-control" name="question" placeholder="Você é pro ou contra?" required>
+					<button type="submit" class="btn indigo accent-2">Enviar</button>
 				</div>
-				<button type="submit" class="btn btn-default">Enviar</button>
 			</form>
 		</div>
 		<div class="row">
-			<div class="col-sm-6">
-				<ul class="list-group">
-				  <% for (var i = 0; i < questions.length; i=i+2) { %>
-
-				  		<li class="list-group-item">
-			        		<a href="/vote/<%= questions[i].hash %>"><%= questions[i].text %></a>
-				    		<span class="badge badge-yes"><%= questions[i].yes %></span>
-				    		<span class="badge badge-no"><%= questions[i].no %></span>
-				  		</li>
-					<% } %>
-				</ul>
-		    </div>
-			<div class="col-sm-6">
-				<ul class="list-group">
-				  <% for (var i = 1; i < questions.length; i=i+2) { %>
-				  		<li class="list-group-item">
-			        		<a href="/vote/<%= questions[i].hash %>"><%= questions[i].text %></a>
-				    		<span class="badge badge-yes"><%= questions[i].yes %></span>
-				    		<span class="badge badge-no"><%= questions[i].no %></span>
-				  		</li>
-					<% } %>
-				</ul>
-		    </div>
+			<% for (var i = 0; i < questions.length; i++) { %>
+				<div class="col-sm-6">
+					<div class="card white-text">
+			            <a class="card-content blue-grey lighten-2"  href="/vote/<%= questions[i].hash %>">
+			              <span class="card-title"><%= questions[i].text %></span>
+			            </a>
+			            <div class="clearfix">
+					    	<a href="/vote/<%= questions[i].hash %>" class="col-xs-6 text-center card-link green lighten-3"><%= questions[i].yes %></a>
+					    	<a href="/vote/<%= questions[i].hash %>" class="col-xs-6 text-center card-link red lighten-3"><%= questions[i].no %></a>
+			            </div>
+			        </div>
+		    	</div>
+			<% } %>
 		</div>
+	</div>
+	<div id="note">
+		Os dados apresentados são apenas uma representação de quantos cliques ocorreram em cada uma das opções. Sendo passíveis de falha são apenas uma representação da opinião geral dos participantes.
 	</div>
 	<% include scripts %>
 	<script type="text/javascript">

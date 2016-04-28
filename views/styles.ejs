@@ -1,20 +1,43 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+
 <style>
 		body {
 			transition: background 10s;
-			font-family: "Opensans";
+			font-family: "Roboto";
+			color: #212121;
 		}
-		body.yes {
-			background-color: #5AD3D1;
+		footer.page-footer {
+			margin-top: 80px;
 		}
-		body.no {
-			background-color: rgba(255, 90, 94, 0.7);
+		body.yes h1{
+			margin-top: 0;
+			color: #5AD3D1;
+		}
+		body.no h1{
+			margin-top: 0;
+			color: rgb(255, 90, 94);
+		}
+		h1 small {
+			font-size: 30%;
 		}
 		h1 {
 			margin-top:100px;
 		}
+		a, a:active, a:visited, a:hover {
+			color: white;
+			text-decoration: none !important;
+		}
 
+		.card .card-content {
+			display: block;
+		}
+
+		.card-link {
+			padding: 10px 0;
+		}
 		.button {
 		    display: inline-block;
 		    height: 300px;
@@ -40,12 +63,16 @@
 			transform: translate3d(0, -1000px,0);
 			opacity: 0;
 		}
+		.done .button {
+		    margin: 0;
+		    padding: 0;
+		    height: 0;
+		}
 		.done #result-container {
 			opacity: 1;
 		}
 		#result-container {
 			opacity: 0;
-			position: absolute;
 			top: 0;
 			left: 0;
 			right: 0;
@@ -139,4 +166,32 @@
 			margin: 60px 0;
 		}
 
+
+		  /* label color */
+		   .input-field label {
+		     color: #000;
+		   }
+		   /* label focus color */
+		   .input-field input[type=text]:focus + label {
+		     color: #000;
+		   }
+		   /* label underline focus color */
+		   .input-field input[type=text]:focus {
+		     border-bottom: 1px solid #536DFE;
+		     box-shadow: 0 1px 0 0 #536DFE;
+		   }
+		   /* valid color */
+		   .input-field input[type=text].valid {
+		     border-bottom: 1px solid #536DFE;
+		     box-shadow: 0 1px 0 0 #536DFE;
+		   }
+		   /* invalid color */
+		   .input-field input[type=text].invalid {
+		     border-bottom: 1px solid #000;
+		     box-shadow: 0 1px 0 0 #000;
+		   }
+		   /* icon prefix focus color */
+		   .input-field .prefix.active {
+		     color: #000;
+		   }
 	</style>
