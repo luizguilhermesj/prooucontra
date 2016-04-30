@@ -2,15 +2,18 @@ var express = require('express');
 var router = express.Router();
 var Question = require('../models/question')();
 var request = require('request');
+var phantom = require('phantom');
+var base64Img = require('base64-img');
 
 /* GET vote listing. */
 router.post('/:hash', function(req, res, next) {
 	Question.findOne({hash: req.params.hash}, function(err, question){
 		var newData = {};
 		var votescount = question.yes + question.no;
-		
+
 		if (votescount % 10 == 0) {
 			request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent("http://prooucontra.com.br/vote/"+question.hash));
+			saveImage(question.hash);
 		}
 		newData[req.body.vote] = question[req.body.vote]+1;
 
@@ -51,5 +54,40 @@ router.get('/:hash', function(req, res, next) {
   		res.send(question.text);
 	})
 });
+
+var saveImage = function(hash) {
+	phantom.create()
+    .then(instance => {
+        phInstance = instance;
+        return instance.createPage();
+    })
+    .then(page => {
+        sitepage = page;
+        page.addCookie({
+		  'name'     : hash,   /* required property */
+		  'value'    : 'yes',  /* required property */
+		  'domain'   : 'localhost',
+		  'path'     : '/',                /* required property */
+		  'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
+		});
+		return page.open('http://prooucontra.com.br/vote/'+hash);
+    })
+    .then(status => {
+        return sitepage.property('content');
+    })
+    .then(content => {
+    	return sitepage.evaluate(function() {
+		    return $('canvas')[0].toDataURL("image/png", 0);
+		});
+    })
+    .then(image => {
+		base64Img.img(image,'public/images/og', hash);
+        sitepage.close();
+        phInstance.exit();
+    })
+    .catch(error => {
+        phInstance.exit();
+    });
+}
 
 module.exports = router;

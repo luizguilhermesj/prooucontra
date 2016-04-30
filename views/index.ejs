@@ -26,12 +26,12 @@
 			<% for (var i = 0; i < questions.length; i++) { %>
 				<div class="col-sm-6">
 					<div class="card white-text">
-			            <a class="card-content blue-grey lighten-2"  href="/vote/<%= questions[i].hash %>">
+			            <a class="card-content blue-grey"  href="/vote/<%= questions[i].hash %>">
 			              <span class="card-title"><%= questions[i].text %></span>
 			            </a>
 			            <div class="clearfix">
-					    	<a href="/vote/<%= questions[i].hash %>" class="col-xs-6 text-center card-link green lighten-3"><%= questions[i].yes %></a>
-					    	<a href="/vote/<%= questions[i].hash %>" class="col-xs-6 text-center card-link red lighten-3"><%= questions[i].no %></a>
+					    	<a href="/vote/<%= questions[i].hash %>" class="col-xs-6 text-center card-link green"><%= questions[i].yes %></a>
+					    	<a href="/vote/<%= questions[i].hash %>" class="col-xs-6 text-center card-link red"><%= questions[i].no %></a>
 			            </div>
 			        </div>
 		    	</div>
@@ -41,6 +41,7 @@
 	<div id="note">
 		Os dados apresentados são apenas uma representação de quantos cliques ocorreram em cada uma das opções. Sendo passíveis de falha são apenas uma representação da opinião geral dos participantes.
 	</div>
+	<% include footer %>
 	<% include scripts %>
 	<script type="text/javascript">
 		(function(){
