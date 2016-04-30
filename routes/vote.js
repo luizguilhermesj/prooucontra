@@ -10,20 +10,18 @@ router.post('/:hash', function(req, res, next) {
 	Question.findOne({hash: req.params.hash}, function(err, question){
 		var newData = {};
 		var votescount = question.yes + question.no;
-
-		if (votescount < 10 || votescount % 10 == 0) {
-			request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent(res.app.get('config').url+"/vote/"+question.hash));
-			try {
-			saveImage(question.hash);
-			} catch (error) {
-				console.log(error);
-			}
-		}
 		newData[req.body.vote] = question[req.body.vote]+1;
 
 
 		Question.findOneAndUpdate({_id: question._id}, newData, function(err, doc){
-			console.log(doc);
+			if (votescount < 10 || votescount % 10 == 0) {
+				request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent(res.app.get('config').url+"/vote/"+question.hash));
+				try {
+				saveImage(question.hash);
+				} catch (error) {
+					console.log(error);
+				}
+			}
 		})
 	})
 
