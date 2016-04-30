@@ -1,12 +1,19 @@
 var express = require('express');
 var router = express.Router();
 var Question = require('../models/question')();
+var request = require('request');
 
 /* GET vote listing. */
 router.post('/:hash', function(req, res, next) {
 	Question.findOne({hash: req.params.hash}, function(err, question){
 		var newData = {};
+		var votescount = question.yes + question.no;
+		
+		if (votescount % 10 == 0) {
+			request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent("http://prooucontra.com.br/vote/"+question.hash));
+		}
 		newData[req.body.vote] = question[req.body.vote]+1;
+
 
 		Question.findOneAndUpdate({_id: question._id}, newData, function(err, doc){
 			console.log(doc);

@@ -59,7 +59,7 @@
 				$('body').addClass($(this).data('action'));
 				$.post('/vote/<%=hash%>',{vote: $(this).data('action'), '_csrf': '<%= csrf %>'});
 
-				ga('send', 'event','votes', $(this).data('action'));
+				ga('send', 'event','<%= question %>', $(this).data('action'));
 
 				window.location="/vote/<%=hash%>";
 			});
