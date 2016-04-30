@@ -11,9 +11,13 @@ router.post('/:hash', function(req, res, next) {
 		var newData = {};
 		var votescount = question.yes + question.no;
 
-		if (votescount % 10 == 0) {
-			request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent("http://www.prooucontra.com.br/vote/"+question.hash));
+		if (votescount < 10 || votescount % 10 == 0) {
+			request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent(res.app.get('config').url+"/vote/"+question.hash));
+			try {
 			saveImage(question.hash);
+			} catch (error) {
+				console.log(error);
+			}
 		}
 		newData[req.body.vote] = question[req.body.vote]+1;
 
@@ -39,7 +43,8 @@ router.get('/:hash', function(req, res, next) {
 			  	pros: pros,
 			  	cons: cons,
 			  	cookie: req.cookies[question.hash],
-			  	voted: (req.cookies[question.hash] == 'yes') ? 'pró' : 'contra'
+			  	voted: (req.cookies[question.hash] == 'yes') ? 'pró' : 'contra',
+			  	url: res.app.get('config').url
 			});	
 		} 
 
@@ -48,7 +53,8 @@ router.get('/:hash', function(req, res, next) {
 			question: question.text,
 			pros: pros,
 			cons: cons,
-			csrf: req.csrfToken()
+			csrf: req.csrfToken(),
+			url: res.app.get('config').url
 		});
 
   		res.send(question.text);
@@ -56,6 +62,8 @@ router.get('/:hash', function(req, res, next) {
 });
 
 var saveImage = function(hash) {
+	var config = require('../config/config');
+
 	phantom.create()
     .then(instance => {
         phInstance = instance;
@@ -66,11 +74,11 @@ var saveImage = function(hash) {
         page.addCookie({
 		  'name'     : hash,   /* required property */
 		  'value'    : 'yes',  /* required property */
-		  'domain'   : 'www.prooucontra.com.br',
+		  'domain'   : config.domain,
 		  'path'     : '/',                /* required property */
 		  'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
 		});
-		return page.open('http://www.prooucontra.com.br/vote/'+hash);
+		return page.open(config.url+'/vote/'+hash);
     })
     .then(status => {
         return sitepage.property('content');
@@ -81,7 +89,9 @@ var saveImage = function(hash) {
 		});
     })
     .then(image => {
-		base64Img.img(image,'public/images/og', hash);
+		base64Img.img(image,'public/images/og', hash, function(err, filepath) {
+			if(err) return console.log(err);
+		});
         sitepage.close();
         phInstance.exit();
     })

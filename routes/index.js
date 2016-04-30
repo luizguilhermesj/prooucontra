@@ -8,7 +8,8 @@ router.get('/', function(req, res, next) {
 	Question.find({}, function(err, questions){
 		return res.render('index', {
 			questions: questions,
-			csrf: req.csrfToken()
+			csrf: req.csrfToken(),
+			url: res.app.get('config').url
 		});	
 	});
 });

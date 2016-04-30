@@ -5,6 +5,7 @@ var logger = require('morgan');
 var csrf = require('csurf');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var config = require('./config/config');
 
 var routes = require('./routes/index');
 var vote = require('./routes/vote');
@@ -18,6 +19,7 @@ var app = express();
 // view engine setup
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
+app.set('config', config); 
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
