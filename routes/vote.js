@@ -12,7 +12,7 @@ router.post('/:hash', function(req, res, next) {
 		var votescount = question.yes + question.no;
 
 		if (votescount % 10 == 0) {
-			request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent("http://prooucontra.com.br/vote/"+question.hash));
+			request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent("http://www.prooucontra.com.br/vote/"+question.hash));
 			saveImage(question.hash);
 		}
 		newData[req.body.vote] = question[req.body.vote]+1;
@@ -66,11 +66,11 @@ var saveImage = function(hash) {
         page.addCookie({
 		  'name'     : hash,   /* required property */
 		  'value'    : 'yes',  /* required property */
-		  'domain'   : 'localhost',
+		  'domain'   : 'www.prooucontra.com.br',
 		  'path'     : '/',                /* required property */
 		  'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
 		});
-		return page.open('http://prooucontra.com.br/vote/'+hash);
+		return page.open('http://www.prooucontra.com.br/vote/'+hash);
     })
     .then(status => {
         return sitepage.property('content');
