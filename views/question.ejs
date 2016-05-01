@@ -60,10 +60,10 @@
 
 				ga('send', 'event','<%= question %>', $(this).data('action'));
 
+				
+				$.post('/vote/<%=hash%>',{vote: $(this).data('action'), '_csrf': '<%= csrf %>'});
 
-				$.post('/vote/<%=hash%>',{vote: $(this).data('action'), '_csrf': '<%= csrf %>'}).always(function(){
-					window.location="/vote/<%=hash%>";
-				});
+				window.location="/vote/<%=hash%>";
 			});
 		})();
 	</script>
