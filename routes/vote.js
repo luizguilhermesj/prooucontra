@@ -16,7 +16,9 @@ router.post('/:hash', function(req, res, next) {
 		Question.findOneAndUpdate({_id: question._id}, newData, function(err, doc){
 
 			if (votescount < 10 || votescount % 10 == 0) {
-					request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent(res.app.get('config').url+"/vote/"+question.hash));
+					request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent(res.app.get('config').url+"/vote/"+question.hash),function(){
+						console.log('facebook request-end')	;
+					});
 					saveImage(question.hash, res);
 			} else {
 				res.end();
@@ -59,14 +61,17 @@ router.get('/:hash', function(req, res, next) {
 var saveImage = function(hash, res) {
 	var config = require('../config/config');
 	console.log(config);
+	
+	var sitepage = null;
+	var phInstance = null;
 
 	phantom.create()
-    .then(instance => {
+    .then(function(instance) {
 	console.log('instance');
         phInstance = instance;
         return instance.createPage();
     })
-    .then(page => {
+    .then(function(page) {
 	console.log('page');
         sitepage = page;
         page.addCookie({
@@ -78,18 +83,18 @@ var saveImage = function(hash, res) {
 		});
 		return page.open(config.url+'/vote/'+hash);
     })
-    .then(status => {
+    .then(function(status) {
 	console.log('status',status);
         return sitepage.property('content');
     })
-    .then(content => {
+    .then(function(content) {
 	console.log('evaluate');
     	return sitepage.evaluate(function() {
 					console.log('evaluating');
 				    return $('canvas')[0].toDataURL("image/png", 0);
 				})
 	})
-	.then(image => {
+	.then(function(image) {
 		console.log('closing');
         sitepage.close();
 
@@ -102,7 +107,7 @@ var saveImage = function(hash, res) {
 
 		console.log('exited');
     })
-    .catch(error => {
+    .catch(function(error) {
 		console.log('error', error);
 		res.end();
         phInstance.exit();
