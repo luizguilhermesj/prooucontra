@@ -16,8 +16,8 @@ router.post('/:hash', function(req, res, next) {
 		Question.findOneAndUpdate({_id: question._id}, newData, function(err, doc){
 
 			if (votescount < 10 || votescount % 10 == 0) {
-					request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent(res.app.get('config').url+"/vote/"+question.hash), function(err, info){
-						console.log('facebook request info:'+info+err);
+					request.post('https://graph.facebook.com?scrape=true&id='+encodeURIComponent(res.app.get('config').url+"/vote/"+question.hash), function(err, response, body){
+						console.log('facebook request info:'+body);
 					});
 					saveImage(question.hash, res);
 			} else {
@@ -93,7 +93,7 @@ var saveImage = function(hash, res) {
 		base64Img.img(image, config.imagesPath, hash, function(err, file){
 			if (!err) {		
 				var fs = require('fs');
-				fs.chmod(file, 0775, function(err)){
+				fs.chmod(file, 0775, function(err){
 				 if(err) throw err;
 				});
 			}
