@@ -90,7 +90,14 @@ var saveImage = function(hash, res) {
 				})
 	})
 	.then(function(image) {
-		base64Img.img(image, config.imagesPath, hash, function(){
+		base64Img.img(image, config.imagesPath, hash, function(err, file){
+			if (!err) {		
+				var fs = require('fs');
+				fs.chmod(file, 0775, function(err)){
+				 if(err) throw err;
+				});
+			}
+
 			console.log('imgGen');
 		    sitepage.close();
 			res.end();
