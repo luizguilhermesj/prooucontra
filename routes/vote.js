@@ -16,9 +16,10 @@ router.post('/:hash', function(req, res, next) {
 
 			if (votescount < 10 || votescount % 10 == 0) {
 					request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent(res.app.get('config').url+"/vote/"+question.hash));
-					saveImage(question.hash);
+					saveImage(question.hash, res);
+			} else {
+				res.end();
 			}
-			res.end();
 		});
 	});
 });
@@ -55,7 +56,47 @@ router.get('/:hash', function(req, res, next) {
 });
 
 var saveImage = function(hash, res) {
-	require('child_process').exec('../bin/updateImage '+hash);
+	var config = require('../config/config');
+	config.url = "http://localhost:3000";
+	config.domain = "localhost";
+	var sitepage = null;
+	var phInstance = null;
+
+	phantom.create()
+	.then(function(instance) {
+	    phInstance = instance;
+	    return instance.createPage();
+	})
+	.then(function(page) {
+	    sitepage = page;
+	    page.addCookie({
+		  'name'     : hash,   /* required property */
+		  'value'    : 'yes',  /* required property */
+		  'domain'   : config.domain,
+		  'path'     : '/',                /* required property */
+		  'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
+		});
+		return page.open(config.url+'/vote/'+hash);
+	})
+	.then(function(status) {
+	    return sitepage.property('content');
+	})
+	.then(function(content) {
+		return sitepage.evaluate(function() {
+				    return $('canvas')[0].toDataURL('image/png', 0);
+				})
+	})
+	.then(function(image) {
+		base64Img.img(image, config.imagesPath, hash, function(){
+		    sitepage.close();
+			res.end();
+			phInstance.exit();
+		});
+	})
+	.catch(function(error) {
+		res.end();
+	    phInstance.exit();
+	});
 }
 
 module.exports = router;
