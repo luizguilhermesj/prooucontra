@@ -56,9 +56,8 @@ router.get('/:hash', function(req, res, next) {
 });
 
 var saveImage = function(hash, res) {
-	var config = require('../config/config');
-	config.url = "http://localhost:3000";
-	config.domain = "localhost";
+	localUrl = "http://localhost:3000";
+	localDomain = "localhost";
 	var sitepage = null;
 	var phInstance = null;
 
@@ -72,11 +71,11 @@ var saveImage = function(hash, res) {
 	    page.addCookie({
 		  'name'     : hash,   /* required property */
 		  'value'    : 'yes',  /* required property */
-		  'domain'   : config.domain,
+		  'domain'   : localDomain,
 		  'path'     : '/',                /* required property */
 		  'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
 		});
-		return page.open(config.url+'/vote/'+hash);
+		return page.open(localUrl+'/vote/'+hash);
 	})
 	.then(function(status) {
 	    return sitepage.property('content');
