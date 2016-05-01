@@ -59,8 +59,9 @@ router.get('/:hash', function(req, res, next) {
 });
 
 var saveImage = function(hash, res) {
-	localUrl = "http://localhost:3000";
-	localDomain = "localhost";
+	var config = require('../config/config');
+	var localUrl = "http://localhost:3000";
+	var localDomain = "localhost";
 	var sitepage = null;
 	var phInstance = null;
 
