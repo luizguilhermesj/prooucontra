@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 var phantom = require('phantom');
+var base64Img = require('base64-img');
 var config = require('../config/config');
+config.url = "http://localhost:3000";
+config.domain = "localhost";
+
 var hash = process.argv[2];
 
 var sitepage = null;
