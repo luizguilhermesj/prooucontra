@@ -56,13 +56,16 @@ router.get('/:hash', function(req, res, next) {
 
 var saveImage = function(hash, res) {
 	var config = require('../config/config');
+	console.log(config);
 
 	phantom.create()
     .then(instance => {
+	console.log('instance');
         phInstance = instance;
         return instance.createPage();
     })
     .then(page => {
+	console.log('page');
         sitepage = page;
         page.addCookie({
 		  'name'     : hash,   /* required property */
@@ -74,21 +77,31 @@ var saveImage = function(hash, res) {
 		return page.open(config.url+'/vote/'+hash);
     })
     .then(status => {
+	console.log('status',status);
         return sitepage.property('content');
     })
     .then(content => {
+	console.log('evaluate');
     	return sitepage.evaluate(function() {
-		    return $('canvas')[0].toDataURL("image/png", 0);
-		});
-    })
-    .then(image => {
-		base64Img.img(image, config.imagesPath, hash, function(err, filepath) {
-			res.end();
-		});
+					console.log('evaluating');
+				    return $('canvas')[0].toDataURL("image/png", 0);
+				})
+	})
+	.then(image => {
+		console.log('closing');
         sitepage.close();
-        phInstance.exit();
+
+		console.log('saving');
+		base64Img.imgSync(image, config.imagesPath, hash);
+		console.log('ending');
+		res.end();
+		console.log('exiting');
+		phInstance.exit();
+
+		console.log('exited');
     })
     .catch(error => {
+		console.log('error', error);
 		res.end();
         phInstance.exit();
     });
