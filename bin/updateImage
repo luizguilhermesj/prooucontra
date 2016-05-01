@@ -35,10 +35,10 @@ phantom.create()
 			})
 })
 .then(function(image) {
-	base64Img.imgSync(image, config.imagesPath, hash);
-
-    sitepage.close();
-	phInstance.exit();
+	base64Img.img(image, config.imagesPath, hash, function(){
+	    sitepage.close();
+		phInstance.exit();
+	});
 })
 .catch(function(error) {
     phInstance.exit();
