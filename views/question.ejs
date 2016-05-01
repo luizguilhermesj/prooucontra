@@ -57,11 +57,13 @@
 
 				$('body').addClass('done');
 				$('body').addClass($(this).data('action'));
-				$.post('/vote/<%=hash%>',{vote: $(this).data('action'), '_csrf': '<%= csrf %>'});
 
 				ga('send', 'event','<%= question %>', $(this).data('action'));
 
-				window.location="/vote/<%=hash%>";
+
+				$.post('/vote/<%=hash%>',{vote: $(this).data('action'), '_csrf': '<%= csrf %>'}).always(function(){
+					window.location="/vote/<%=hash%>";
+				});
 			});
 		})();
 	</script>
