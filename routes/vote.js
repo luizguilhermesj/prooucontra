@@ -7,25 +7,20 @@ var base64Img = require('base64-img');
 
 /* GET vote listing. */
 router.post('/:hash', function(req, res, next) {
-	try {
-		Question.findOne({hash: req.params.hash}, function(err, question){
-			var newData = {};
-			var votescount = question.yes + question.no;
-			newData[req.body.vote] = question[req.body.vote]+1;
+	Question.findOne({hash: req.params.hash}, function(err, question){
+		var newData = {};
+		var votescount = question.yes + question.no;
+		newData[req.body.vote] = question[req.body.vote]+1;
 
 
-			Question.findOneAndUpdate({_id: question._id}, newData, function(err, doc){
-				if (votescount < 10 || votescount % 10 == 0) {
-						request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent(res.app.get('config').url+"/vote/"+question.hash));
-						saveImage(question.hash);
-				}
-	  			res.send('respond with a resource');
-			});
+		Question.findOneAndUpdate({_id: question._id}, newData, function(err, doc){
+
+			if (votescount < 10 || votescount % 10 == 0) {
+					request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent(res.app.get('config').url+"/vote/"+question.hash));
+					saveImage(question.hash, res);
+			}
 		});
-	} catch (error) {
-		console.log(error);
-	  	res.end(error);
-	}
+	});
 });
 
 router.get('/:hash', function(req, res, next) {
@@ -59,7 +54,7 @@ router.get('/:hash', function(req, res, next) {
 	})
 });
 
-var saveImage = function(hash) {
+var saveImage = function(hash, res) {
 	var config = require('../config/config');
 
 	phantom.create()
@@ -88,12 +83,13 @@ var saveImage = function(hash) {
     })
     .then(image => {
 		base64Img.img(image, config.imagesPath, hash, function(err, filepath) {
-			if(err) return console.log(err);
+			res.end();
 		});
         sitepage.close();
         phInstance.exit();
     })
     .catch(error => {
+		res.end();
         phInstance.exit();
     });
 }
