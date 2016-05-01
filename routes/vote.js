@@ -18,6 +18,8 @@ router.post('/:hash', function(req, res, next) {
 			if (votescount < 10 || votescount % 10 == 0) {
 					request('https://graph.facebook.com?scrape=true&id='+encodeURIComponent(res.app.get('config').url+"/vote/"+question.hash));
 					saveImage(question.hash, res);
+			} else {
+				res.end();
 			}
 		});
 	});
