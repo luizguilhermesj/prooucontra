@@ -87,7 +87,7 @@ var saveImage = function(hash) {
 		});
     })
     .then(image => {
-		base64Img.img(image,'public/images/og', hash, function(err, filepath) {
+		base64Img.img(image, config.imagesPath, hash, function(err, filepath) {
 			if(err) return console.log(err);
 		});
         sitepage.close();

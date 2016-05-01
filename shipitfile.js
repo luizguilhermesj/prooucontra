@@ -20,6 +20,7 @@ module.exports = function (shipit) {
   });
 
   shipit.task('npm',['deploy'], function () {
+    shipit.remote('cd '+shipit.releasePath+'/public/images && ln -s ../../../../shared/og og');
     return shipit.remote('cd '+shipit.releasePath+' && npm install');
   });
 
