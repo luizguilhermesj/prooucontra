@@ -5,7 +5,7 @@ var sh = require("shorthash");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	Question.find({}, function(err, questions){
+	Question.find({}, null, {sort: '-hash'}, function(err, questions){
 		return res.render('index', {
 			questions: questions,
 			csrf: req.csrfToken(),
