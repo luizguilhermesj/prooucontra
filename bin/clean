@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/prooucontra');
+
+var Question = require('../models/question')();
+
+Question.find({active: true}, null, {sort: {yes: 1}}, function(err, questions){
+	var counter = questions.length;
+	for (var i=0; i<questions.length;i++) {
+		console.log(counter);
+		if (counter > 10 && questions[i].yes + questions[i].no < 100) {
+			console.log('entrou');
+			Question.findOneAndUpdate({_id: questions[i]._id}, {active: false}, function(){});
+			counter--;
+		}
+	}
+});

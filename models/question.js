@@ -4,7 +4,8 @@ var questionSchema = mongoose.Schema({
 	hash: { type: String, unique: true },
     text: String,
     yes: Number,
-    no: Number
+    no: Number,
+    active: Boolean
 });
 
 module.exports = function() {
